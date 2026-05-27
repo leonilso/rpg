@@ -1,61 +1,44 @@
-import { GAME_RULES } from './src/utils/constants';
+import React from 'react';
+import { StatusBar } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+
+// Importação dos Provedores de Contexto (A ordem importa!)
+import { AuthProvider } from './src/contexts/AuthContext';
+import { WorldProvider } from './src/contexts/WorldContext';
+import { BattleProvider } from './src/contexts/BattleContext';
+
+// Navegador Principal
+import AppNavigator from './src/navigation/AppNavigator';
 
 /**
- * Utilitários de Geração Aleatória (RNG)
+ * O App.js envolve a aplicação em camadas:
+ * 1. SafeArea: Garante que a UI não fique sob notches ou barras de sistema.
+ * 2. Auth: Verifica quem está logado.
+ * 3. World: Carrega os dados do mapa e NPCs do banco.
+ * 4. Battle: Gerencia o estado de combate ativo.
  */
+export default function App() {
+  return (
+    <SafeAreaProvider>
+      <NavigationContainer>
+        <AuthProvider>
+          <WorldProvider>
+            <BattleProvider>
+              
+              {/* Barra de status personalizada para o clima Dark Fantasy */}
+              <StatusBar 
+                barStyle="light-content" 
+                backgroundColor="#1a1a1a" 
+              />
+              
+              {/* O AppNavigator decide se mostra Login ou MainMenu */}
+              <AppNavigator />
 
-export const rngCalculator = {
-  
-  /**
-   * Rola um dado genérico de N lados.
-   * @param {number} sides - Número de lados (padrão definido nas constantes)
-   * @returns {number} Resultado da rolagem
-   */
-  rollDice: (sides = GAME_RULES.DICE_SIDES) => {
-    return Math.floor(Math.random() * sides) + 1;
-  },
-
-  /**
-   * Verifica se uma chance (0 a 100) foi bem sucedida.
-   * Útil para Drops de itens ou chances de Esquiva.
-   * @param {number} percentage - Probabilidade de 0 a 100
-   */
-  checkSuccess: (percentage) => {
-    const roll = Math.random() * 100;
-    return roll <= percentage;
-  },
-
-  /**
-   * Retorna um valor aleatório dentro de um intervalo.
-   * Útil para variação de cura em poções ou dano de armas.
-   */
-  getRandomInRange: (min, max) => {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
-  },
-
-  /**
-   * Determina a raridade de um loot baseado em pesos.
-   * @returns {string} COMMON, UNCOMMON, RARE, EPIC, LEGENDARY
-   */
-  rollLootRarity: () => {
-    const roll = Math.random() * 100;
-
-    if (roll <= 0.5) return 'LEGENDARY'; // 0.5% chance
-    if (roll <= 5)   return 'EPIC';      // 4.5% chance
-    if (roll <= 15)  return 'RARE';      // 10% chance
-    if (roll <= 40)  return 'UNCOMMON';  // 25% chance
-    return 'COMMON';                     // 60% chance
-  },
-
-  /**
-   * Aplica uma pequena variação (jitter) a um valor base.
-   * Evita que o dano seja sempre o mesmo número exato.
-   * Ex: 10 de dano com 10% de variação pode resultar em 9, 10 ou 11.
-   */
-  applyVariation: (baseValue, variationPercent = 0.1) => {
-    const margin = baseValue * variationPercent;
-    return rngCalculator.getRandomInRange(baseValue - margin, baseValue + margin);
-  }
-};
-
-export default rngCalculator;
+            </BattleProvider>
+          </WorldProvider>
+        </AuthProvider>
+      </NavigationContainer>
+    </SafeAreaProvider>
+  );
+}

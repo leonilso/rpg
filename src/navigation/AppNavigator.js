@@ -36,7 +36,6 @@ const AppNavigator = () => {
   }
 
   return (
-    <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
           headerStyle: { backgroundColor: '#2D1E17' }, // Cor de madeira escura
@@ -75,7 +74,6 @@ const AppNavigator = () => {
           </>
         )}
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

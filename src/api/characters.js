@@ -24,6 +24,11 @@ export const createCharacter = async (characterData) => {
   return response.data;
 };
 
+export const registerHero = async (heroData) => {
+  const response = await apiClient.post('/personagens/registrar', heroData);
+  return response.data;
+};
+
 export const updateCharacter = async (id, characterData) => {
   // O método PUT geralmente substitui o objeto inteiro (edição completa no Builder)
   const response = await apiClient.put(`${ENDPOINT}/${id}`, characterData);

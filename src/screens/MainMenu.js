@@ -153,4 +153,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Main
+export default MainMenu

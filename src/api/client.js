@@ -6,16 +6,17 @@ import axios from 'axios';
  * apontará para o próprio celular. 
  * Substitua pelo IP da sua máquina na sua rede Wi-Fi (ex: 192.168.1.15).
  */
-const BASE_URL = 'http://SEU_IP_AQUI:3000/api';
+const BASE_URL = 'http://localhost:8080/api';
 
 // Criação da instância base do cliente HTTP
 const apiClient = axios.create({
   baseURL: BASE_URL,
-  timeout: 10000, // Timeout de 10 segundos. Ninguém quer o app travado esperando o turno do inimigo!
+  timeout: 30000, // Timeout de 10 segundos. Ninguém quer o app travado esperando o turno do inimigo!
   headers: {
     'Content-Type': 'application/json',
     'Accept': 'application/json',
   },
+  withCredentials: true,
 });
 
 // =======================================================
